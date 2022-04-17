@@ -3,8 +3,7 @@ import Task from './task';
 import { Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import Button from 'react-bootstrap/Button';
-import { AlignBottom, AlignCenter, AlignMiddle, Plus } from 'react-bootstrap-icons';
-
+import { Plus } from 'react-bootstrap-icons';
 
 
 const Container = styled.div`
@@ -21,7 +20,6 @@ const Title = styled.h3`
     padding: 8px;
     margin: 3px;
 `;
-
 const TaskList = styled.div`
     padding: 8px;
     transition: background-color 0.2 ease;
@@ -50,8 +48,10 @@ export default class Column extends React.Component {
         return (
         <Container>
             <Title>{this.props.column.title}
-            <Button variant="primary" style={{float: "right"}}>
-            <Plus style={{backgroundColor: "#EFEFEF",}}/>
+            <Button
+             variant="primary" style={{float: "right"}}
+            >
+            <Plus style={{backgroundColor: null}}/>
             </Button>
             </Title>
             <Droppable

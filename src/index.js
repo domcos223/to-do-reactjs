@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import initialData from './initial-data';
-import Column from './column';
+import Column from './components/column';
+import "./index.css";
 import styled from 'styled-components';
 import { DragDropContext } from 'react-beautiful-dnd';
 
 const Container = styled.div`
  display: flex;
+ justify-content: center;
 `;
 
 class App extends React.Component {
@@ -86,8 +88,10 @@ class App extends React.Component {
         
     };
 
+
     render() {
         return (
+            
         <DragDropContext
         onDragStart={this.onDragStart}
         onDragEnd={this.onDragEnd}
@@ -97,14 +101,12 @@ class App extends React.Component {
             const column = this.state.columns[columnId];
             const tasks = column.taskIds.map(taskId => this.state.tasks[taskId],
             );
-            const isDropDisabled = index < this.state.homeIndex;
 
             return (
                 <Column
                  key={column.id}
                  column={column}
                  tasks={tasks}
-                 isDropDisabled={isDropDisabled}
                  />
             );
         })}
