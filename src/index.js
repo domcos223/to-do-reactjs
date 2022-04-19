@@ -5,6 +5,7 @@ import Column from './components/column';
 import "./index.css";
 import styled from 'styled-components';
 import { DragDropContext } from 'react-beautiful-dnd';
+import Header from './components/Header';
 
 const Container = styled.div`
  display: flex;
@@ -90,12 +91,12 @@ class App extends React.Component {
 
 
     render() {
-        return (
-            
+        return (  
         <DragDropContext
         onDragStart={this.onDragStart}
         onDragEnd={this.onDragEnd}
         >
+        <Header/>
         <Container>
          {this.state.columnOrder.map((columnId, index) => {
             const column = this.state.columns[columnId];
