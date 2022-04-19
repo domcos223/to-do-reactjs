@@ -4,6 +4,7 @@ import { Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import Button from 'react-bootstrap/Button';
 import { Plus } from 'react-bootstrap-icons';
+import {useHistory} from "react-router-dom";
 
 
 const Container = styled.div`
@@ -48,7 +49,9 @@ export default class Column extends React.Component {
         return (
         <Container>
             <Title>{this.props.column.title}
-            <Button
+            <Button onClick={() => {
+                this.props.history.push("/add");
+            }}
              variant="primary" style={{float: "right"}}
             >
             <Plus style={{backgroundColor: null}}/>
