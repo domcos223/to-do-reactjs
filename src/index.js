@@ -6,6 +6,8 @@ import "./index.css";
 import styled from 'styled-components';
 import { DragDropContext } from 'react-beautiful-dnd';
 import Header from './components/Header';
+import {BrowserRouter, Route} from "react-router-dom";
+import Add from './components/Add';
 
 const Container = styled.div`
  display: flex;
@@ -14,6 +16,7 @@ const Container = styled.div`
 
 class App extends React.Component {
     state = initialData;
+    
 
     onDragStart = start => {
         const homeIndex = this.state.columnOrder.indexOf(start.source.droppableId);
@@ -91,6 +94,7 @@ class App extends React.Component {
 
 
     render() {
+        
         return (  
         <DragDropContext
         onDragStart={this.onDragStart}
@@ -112,7 +116,11 @@ class App extends React.Component {
             );
         })}
         </Container>
+        {/* <BrowserRouter>
+            <Route exact path="/add" component={Add}/>
+        </BrowserRouter> */}
         </DragDropContext>
+        
         );
     }
 }
