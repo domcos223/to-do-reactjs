@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import { Plus } from 'react-bootstrap-icons';
 
 
+
 const Container = styled.div`
     margin: 8px;
     border: 1px solid lightgrey;
@@ -14,6 +15,7 @@ const Container = styled.div`
     background: #EFEFEF;
     display: flex;
     flex-direction: column;
+    width: 350px;
 
 `;
 const Title = styled.h3`
@@ -28,6 +30,7 @@ const TaskList = styled.div`
     flex-grow: 1;
     min-height: 100px;
 `;
+
 
 class InnerList extends React.Component {
     shouldComponentUpdate(nextProps) {
@@ -49,7 +52,7 @@ export default class Column extends React.Component {
         <Container>
             <Title>{this.props.column.title}
             <Button 
-             variant="primary" size="small" style={{float: "right"}}
+             variant="primary" style={{float: "right"}} class="btn-sm"
             >
             <Plus style={{backgroundColor: null}}/>
             </Button>
