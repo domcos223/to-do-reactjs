@@ -19,7 +19,8 @@ export default class Add extends React.Component {
           <Form.Group id="taskdate">
               <Form.Control type="date" size="lg"/>
           </Form.Group>
-          <Button type="button" class="btn btn-outline-light">Submit</Button>
+          <a><Button id="submitBtn" type="button" class="btn-light btn-lg">Submit</Button></a>
+          <a><Button id="backBtn" type="button" class="btn btn-warning">Cancel</Button></a>
         </Form>
       </Container>
     );
