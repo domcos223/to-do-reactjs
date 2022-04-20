@@ -49,7 +49,7 @@ export default class Column extends React.Component {
         <Container>
             <Title>{this.props.column.title}
             <Button 
-             variant="primary" style={{float: "right"}}
+             variant="primary" size="small" style={{float: "right"}}
             >
             <Plus style={{backgroundColor: null}}/>
             </Button>

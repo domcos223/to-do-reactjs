@@ -22,13 +22,35 @@ h1 {
     width: 600px;
     margin: 10px;
 }
-
+#submitBtn {
+    /* background-color: blueviolet !important;
+    border: #fff !important; */
+    min-width: 20% !important;
+    width: 20% !important;
+}
+#backBtn {
+    background-color: red !important;
+    color:aliceblue;
+    border: #fff !important;
+    min-width: 20% !important;
+    width: 20% !important;
+}
+#submitBtn {
+    background-color: aliceblue !important;
+    color:#0279bf;
+    border: #fff !important;
+    min-width: 20% !important;
+    width: 20% !important;
+}
+a {
+    margin: 10px;
+}
 
 body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+    sans-serif !important;
   -webkit-font-smoothing: antialiased;
     background-color: #0279bf;
   }
