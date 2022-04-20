@@ -1,0 +1,34 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+#main-container {
+    padding-top: 20px;
+    place-items: center center;
+}
+
+h1 {
+    color: aliceblue;
+}
+
+#tasktitle {
+    width: 600px;
+    margin: 10px;
+}
+
+#taskdesc {
+    width: 600px;
+    margin: 10px;
+}
+#taskdate {
+    width: 600px;
+    margin: 10px;
+}
+
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+    background-color: #0279bf;
+  }
