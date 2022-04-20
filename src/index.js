@@ -1,29 +1,16 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Header from './components/Header';
-import {BrowserRouter, Route, Switch} from "react-router-dom";
-import Add from './components/Add';
-import './index.css';
-import DroppableContext from './components/DroppableContext';
-
-
-class App extends React.Component {
-    render() {
-        return (
-            <div>
-            <Header/>
-            <DroppableContext>
-            </DroppableContext>
-            </div>
-        );
-    }
-    
-}
-
-{/* <BrowserRouter>
-            <Route exact path="/add" component={Add}/>
-        </BrowserRouter> */}
+import React from "react";
+import ReactDOM from "react-dom";
+import "./styles/index.css";
+import Add from "./pages/Add";
+import NotFound from "./pages/NotFound";
+import App from "./components/App";
+import { BrowserRouter, Route, Routes} from "react-router-dom";
 
 ReactDOM.render(
-    <App />,
-document.getElementById('root'));
+    <BrowserRouter>
+    <Routes>
+    <Route path="/" element={<App />}/>
+    <Route path="/add" element={<Add />}/>
+    <Route path="*" element={<NotFound />} />
+    </Routes>
+    </BrowserRouter>, document.getElementById("root"));
