@@ -1,4 +1,5 @@
-//initialData = fetch("localhost:4000/get_all_data")
+// import Axios from "axios";
+// initialData = Axios.get(`localhost:3000/`);
 
 const initialData = {
   tasks: {
