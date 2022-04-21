@@ -3,13 +3,26 @@
 
 const initialData = {
   tasks: {
-    "task-1": { id: "task-1", content: "CRUD műveletek" },
-    "task-2": { id: "task-2", content: "JSON mock backend" },
+    "task-1": {
+      id: "task-1",
+      content: "CRUD műveletek",
+      dueDate: "2022/05/17",
+    },
+    "task-2": {
+      id: "task-2",
+      content: "JSON mock backend",
+      dueDate: "2022/05/17",
+    },
     "task-3": {
       id: "task-3",
       content: "Feladatokhoz részletek (leírás,határidő)",
+      dueDate: "2022/05/17",
     },
-    "task-4": { id: "task-4", content: "UI elemek a műveletekhez" },
+    "task-4": {
+      id: "task-4",
+      content: "UI elemek a műveletekhez",
+      dueDate: "2022/05/17",
+    },
   },
   columns: {
     "column-1": {
@@ -34,10 +47,6 @@ const initialData = {
     },
   },
   columnOrder: ["column-1", "column-2", "column-3", "column-4"],
-
-  buttons: {
-    "addbtn-1": { id: "addbtn-1" },
-  },
 };
 
 export default initialData;

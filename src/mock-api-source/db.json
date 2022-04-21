@@ -2,19 +2,27 @@
   "tasks": [
     {
       "id": "task-1",
-      "content": "Take out the garbage"
+      "title": "Take out the garbage",
+      "description" : "Description should be shown here ",
+      "dueDate" : "2022/12/11"
     },
     {
       "id": "task-2",
-      "content": "Watch my favourite show"
+      "title": "Watch my favourite show",
+      "description" : "Description should be shown here ",
+      "dueDate" : "2022/12/12"
     },
     {
       "id": "task-3",
-      "content": "Charge my phone"
+      "title": "Charge my phone",
+      "description" : "Description should be shown here ",
+      "dueDate" : "2022/12/13"
     },
     {
       "id": "task-4",
-      "content": "Cook dinner"
+      "title": "Cook dinner",
+      "description" : "Description should be shown here ",
+      "dueDate" : "2022/12/14"
     }
   ],
   "columns": [

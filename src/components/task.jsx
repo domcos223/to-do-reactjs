@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
 import { ButtonGroup } from "react-bootstrap";
-import {PencilIcon, XIcon} from '@primer/octicons-react'
+import {PencilIcon, XIcon, ClockIcon} from '@primer/octicons-react'
 
 const Container = styled.div`
   border: 1px solid lightgrey;
@@ -11,7 +11,7 @@ const Container = styled.div`
   margin-bottom: 8px;
   background-color: ${(props) => (props.isDragging ? "lightgreen" : "white")};
 
-  display: flex;
+  display: flow-root;
 `;
 
 
@@ -25,7 +25,9 @@ export default class Task extends React.Component {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             isDragging={snapshot.isDragging}
-          >
+          > 
+          <div id="taskHolder">
+            <div id="taskLine" style={{display:"flex"}}>
             {this.props.task.content}
             <ButtonGroup style={{marginLeft:"auto", alignItems:"center"}}>
             <button id="editBtn" type="button">
@@ -39,9 +41,14 @@ export default class Task extends React.Component {
               <XIcon size={16}/>
                 </span>
             </button>
-            </ButtonGroup>
-            
-            
+            </ButtonGroup>  
+            </div>
+            <div id="taskDate" style={{display:"flex"}}>
+            <ClockIcon size={16}>
+            </ClockIcon>
+            {this.props.task.dueDate}
+            </div>
+            </div>          
           </Container>
         )}
       </Draggable>
