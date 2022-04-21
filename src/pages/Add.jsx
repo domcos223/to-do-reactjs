@@ -4,6 +4,8 @@ import Form from "react-bootstrap/Form";
 import React from "react";
 import initialData from '../initial-data';
 import "../styles/add.css";
+import {useNavigate} from "react-router-dom";
+
 
 export default class Add extends React.Component {
   state = initialData;
@@ -30,6 +32,10 @@ export default class Add extends React.Component {
 //  })
   }
 
+  routeChange=()=> {
+    window.location.href = `/`;
+  }
+
   render() {
     return (
       <Container id="main-container" className="d-grid">
@@ -45,7 +51,7 @@ export default class Add extends React.Component {
               <Form.Control type="date" size="lg"/>
           </Form.Group>
           <a><Button id="submitBtn" type="submit" className="btn-light btn-lg">Submit</Button></a>
-          <a><Button id="backBtn" type="button" className="btn btn-warning">Cancel</Button></a>
+          <a><Button id="backBtn" type="button" className="btn btn-warning" onClick={this.routeChange}>Cancel</Button></a>
         </Form>
       </Container>
     );
