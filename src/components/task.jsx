@@ -32,8 +32,8 @@ export default class Task extends React.Component {
               <span aria-hidden="true">
               <PencilIcon size={16}/>
               </span>
-              
             </button>
+            
             <button id="deleteBtn" type="button" aria-label="Close">
               <span aria-hidden="true">
               <XIcon size={16}/>
