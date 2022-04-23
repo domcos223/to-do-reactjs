@@ -10,7 +10,6 @@ const Container = styled.div`
   padding: 8px;
   margin-bottom: 8px;
   background-color: ${(props) => (props.isDragging ? "lightgreen" : "white")};
-
   display: flow-root;
 `;
 
@@ -43,7 +42,7 @@ export default class Task extends React.Component {
             </button>
             </ButtonGroup>  
             </div>
-            <div id="taskDate" style={{display:"flex"}}>
+            <div id="taskDate" style={{display:"flex", alignItems:"center"}}>
             <ClockIcon size={16}>
             </ClockIcon>
             {this.props.task.dueDate}

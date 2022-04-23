@@ -6,22 +6,26 @@ const initialData = {
     "task-1": {
       id: "task-1",
       content: "CRUD műveletek",
-      dueDate: "2022/05/17",
+      description : "Description should be shown here ",
+      dueDate: "2022/05/11",
     },
     "task-2": {
       id: "task-2",
       content: "JSON mock backend",
-      dueDate: "2022/05/17",
+      description : "Description should be shown here ",
+      dueDate: "2022/05/12",
     },
     "task-3": {
       id: "task-3",
       content: "Feladatokhoz részletek (leírás,határidő)",
-      dueDate: "2022/05/17",
+      description : "Description should be shown here ",
+      dueDate: "2022/05/13",
     },
     "task-4": {
       id: "task-4",
       content: "UI elemek a műveletekhez",
-      dueDate: "2022/05/17",
+      description : "Description should be shown here ",
+      dueDate: "2022/05/14",
     },
   },
   columns: {
