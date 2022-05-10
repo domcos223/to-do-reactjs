@@ -1,5 +1,5 @@
 import React from "react";
-import Task from "./task";
+import Task from "./Task";
 import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import Button from "react-bootstrap/Button";
@@ -24,7 +24,7 @@ const TaskList = styled.div`
   padding: 8px;
   transition: background-color 0.2 ease;
   border-radius: 5%;
-  background-color: ${(props) => (props.isDraggingOver ? "skyblue" : "white")};
+  background-color: ${(props) => (props.isDraggingOver ? "skyblue" : "white")}; /* color changes if task is dragged over it */
   flex-grow: 1;
   min-height: 100px;
 `;
@@ -52,23 +52,22 @@ export default class Column extends React.Component {
     return (
       <Container>
         <Title>
-          {this.props.column.title}
-          <Button variant="primary" onClick={() => this.handleAdd(this.props.column.id)} style={{ float: "right" }} className="btn-sm">
+          {this.props.columnTitle}
+          <Button variant="primary" id={this.props.column} onClick={() => this.handleAdd(this.props.column.id)} style={{ float: "right" }} className="btn-sm">
             <Plus style={{ backgroundColor: null }} />
           </Button>
         </Title>
         <Droppable
           droppableId={this.props.column.id}
-          isDropDisabled={this.props.isDropDisabled}
         >
           {(provided, snapshot) => (
-            <TaskList
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-              isDraggingOver={snapshot.isDraggingOver}
+            <TaskList    //we need tasklist and innerlist separate so when dragging the other tasks that have no change won't render
+              ref={provided.innerRef}  //provided has all the data to make a droppable function properly
+              {...provided.droppableProps}  //provides the props to update DOM node
+              isDraggingOver={snapshot.isDraggingOver} //for styling
             >
               <InnerList tasks={this.props.tasks} />
-              {provided.placeholder}
+              {provided.placeholder} 
             </TaskList>
           )}
         </Droppable>

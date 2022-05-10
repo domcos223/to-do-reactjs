@@ -9,7 +9,7 @@ const Container = styled.div`
   border-radius: 2px;
   padding: 8px;
   margin-bottom: 8px;
-  background-color: ${(props) => (props.isDragging ? "lightgreen" : "white")};
+  background-color: ${(props) => (props.isDragging ? "lightgreen" : "white")}; /* if the task is dragged the color changes */
   display: flow-root;
 `;
 
@@ -18,11 +18,11 @@ export default class Task extends React.Component {
   render() {
     return (
       <Draggable draggableId={this.props.task.id} index={this.props.index}>
-        {(provided, snapshot) => (
+        {(provided, snapshot) => (  //snapshot is passed for styling 
           <Container
             ref={provided.innerRef}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
+            {...provided.draggableProps}   
+            {...provided.dragHandleProps}  //to being able to move the container dragging from anywhere
             isDragging={snapshot.isDragging}
           > 
           <div id="taskHolder">
