@@ -15,9 +15,15 @@ const Container = styled.div`
 
 
 export default class Task extends React.Component {
+
+  handleEdit(id) {
+    window.location.href = `/edit?id=${id}`;
+
+}
+
   render() {
     return (
-      <Draggable draggableId={this.props.task.id} index={this.props.index}>
+      <Draggable draggableId={this.props.task.todoId.toString()} index={this.props.index}>
         {(provided, snapshot) => (  //snapshot is passed for styling 
           <Container
             ref={provided.innerRef}
@@ -27,9 +33,9 @@ export default class Task extends React.Component {
           > 
           <div id="taskHolder">
             <div id="taskLine" style={{display:"flex"}}>
-            {this.props.task.content}
+            {this.props.task.title}
             <ButtonGroup style={{marginLeft:"auto", alignItems:"center"}}>
-            <button id="editBtn" type="button">
+            <button id="editBtn" type="button" onClick={() => this.handleEdit(this.props.task.todoId)}>
               <span aria-hidden="true">
               <PencilIcon size={16}/>
               </span>

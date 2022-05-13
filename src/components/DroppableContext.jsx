@@ -11,20 +11,20 @@ const Container = styled.div`
 
 export default class DroppableContext extends React.Component {
     state = {
-        columns : [],
-        todos: []
+        columns : []
+        //todos: []
     }
 
     componentDidMount() {
-        axios.get(`https://localhost:7202/api/Columns`)
+        axios.get(`https://localhost:7202/api/Column`)
         .then(res => {
-            console.log(res);
+          //  console.log(res);
             this.setState({columns: res.data})
         })
-        axios.get(`https://localhost:7202/api/Todos`)
-        .then(res => {
-            this.setState({todos: res.data})
-        })
+        // axios.get(`https://localhost:7202/api/Todo`)
+        // .then(res => {
+        //     this.setState({todos: res.data})
+        // })
     }
     
 
@@ -32,7 +32,7 @@ export default class DroppableContext extends React.Component {
         this.setState({
             homeIndex: null,
         });
-        const {destination, source, draggableId} = result;  //result is an object that has these properties
+        var {destination, source, draggableId} = result;  //result is an object that has these properties
         //dragged out of dragdropcontext
         if (!destination) {
             return;
@@ -45,68 +45,73 @@ export default class DroppableContext extends React.Component {
             return;
         }
         //
-        //const start = this.state.columns[source.droppableId];
-        //const finish = this.state.columns[destination.droppableId];
-        let start = source.droppableId;
-        let finish = destination.droppableId;
-        finish = parseInt(finish);
+        let start = this.state.columns[source.droppableId-1];
+        let finish = this.state.columns[destination.droppableId-1];
+        let draggedTodo = start.todos[draggableId-1];
+    
+        //let start = source.droppableId; //id of the column the task was moved from
+        //let finish = destination.droppableId; 
+        //finish = parseInt(finish);
+        //console.log("Honnan: "+ start + " Hova: "+finish+" Mit: "+draggableId );
 
         //dragging happens inside one column
         if (start === finish) {
-            const newTaskIds = Array.from(start.taskIds); //creating a new TaskIds array to avoid mutating explicitly
+            const newTaskIds = Array.from(start.todos); //creating a new TaskIds array to avoid mutating explicitly
             newTaskIds.splice(source.index,1); //take out the moved item from its index
-            newTaskIds.splice(destination.index, 0, draggableId); //not removing anything, but inserting the new task 
+            newTaskIds.splice(destination.index, 0, draggedTodo); //not removing anything, but inserting the new task 
 
         const newColumn = {
             ...start,   //has the same properties but new taskIds - we keep the old properties ! 
-            taskIds: newTaskIds,
+            todos: newTaskIds,
         };
 
         const newState = {
             ...this.state,
             columns: {
                 ...this.state.columns,
-                [newColumn.id]: newColumn,  //passing the new column object at the changed index ,changing the old 
+                [newColumn.columnId-1]: newColumn,  //passing the new column object at the changed index ,changing the old 
             },
         };
-        this.setState(newState); //saving the order change
-        return; //TODO: call endpoint updating database after change
+        this.setState(Array.from(newState)); //saving the order change, updating (?)
+        return;
+
         }
-        const res = axios({
-            method: 'put',
-            url: 'https://localhost:7202/api/Todos/UpdateList',
-            data: {
-                id: finish,
-                draggedtaskid:draggableId
-            }
-        })
+        // const res = axios({
+        //     method: 'put',
+        //     url: 'https://localhost:7202/api/Todos/UpdateList',
+        //     data: {
+        //         id: finish,
+        //         draggedtaskid:draggableId
+        //     }
+        // })
 
-        //moving from one column to another
-    //     const startTaskIds = Array.from(start.taskIds); 
-    //     startTaskIds.splice(source.index, 1); //remove dragged task-id 
-    //     const newStart = {
-    //         ...start,
-    //         taskIds: startTaskIds,
-    //     };
+       // moving from one column to another
+        const startTaskIds = Array.from(start.todos); 
+        startTaskIds.splice(source.index, 1); //remove dragged task-id 
+        const newStart = {
+            ...start,
+            todos: startTaskIds,
+        };
 
-    //     const finishTaskIds = Array.from(finish.taskIds);  //add dropped task to new column 
-    //     finishTaskIds.splice(destination.index, 0, draggableId);
+        const finishTaskIds = Array.from(finish.todos);  //add dropped task to new column 
+        finishTaskIds.splice(destination.index, 0, draggedTodo);
 
-    //     const newFinish = {
-    //         ...finish,
-    //         taskIds: finishTaskIds,
-    //     };
+        const newFinish = {
+            ...finish,
+            todos: finishTaskIds,
+        };
 
-    //     const newState = {
-    //         ...this.state,
-    //         columns: {
-    //             ...this.state.columns,
-    //             [newStart.id]: newStart,
-    //             [newFinish.id]: newFinish,
-    //         },
-    //     };
-    //     this.setState(newState);
+        const newState = {
+            ...this.state,
+            columns: {
+                ...this.state.columns,
+                [newStart.columnId-1]: newStart,
+                [newFinish.columnId-1]: newFinish,
+            },
+        };
         
+        this.setState({columns : newState});
+       
      };
 
 
@@ -118,14 +123,14 @@ export default class DroppableContext extends React.Component {
         > 
         <Container> 
          {this.state.columns.map((columndata, index) => { 
-            const columnKey = columndata.id.toString();
+            const columnId = columndata.columnId.toString();
             const columnTitle = columndata.title;
-            let tasks = this.state.todos;
-            tasks = tasks.filter((item) => item.columnId === columndata.id);
+            let tasks = columndata.todos;
+            //tasks = tasks.filter((item) => item.columnId === columndata.columnId);
             return (
                 <Column
                  key={index}
-                 column={columnKey}
+                 column={columnId} 
                  columnTitle = {columnTitle}
                  tasks={tasks}
                  />

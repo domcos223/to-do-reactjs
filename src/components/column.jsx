@@ -38,7 +38,7 @@ class InnerList extends React.Component {
   }
   render() {
     return this.props.tasks.map((task, index) => (
-      <Task key={task.id} task={task} index={index} />
+      <Task key={task.todoId} task={task} index={index} />
     ));
   }
 }
@@ -53,12 +53,12 @@ export default class Column extends React.Component {
       <Container>
         <Title>
           {this.props.columnTitle}
-          <Button variant="primary" id={this.props.column} onClick={() => this.handleAdd(this.props.column.id)} style={{ float: "right" }} className="btn-sm">
+          <Button variant="primary" id={this.props.column} onClick={() => this.handleAdd(this.props.column)} style={{ float: "right" }} className="btn-sm">
             <Plus style={{ backgroundColor: null }} />
           </Button>
         </Title>
         <Droppable
-          droppableId={this.props.column.id}
+          droppableId={this.props.column}
         >
           {(provided, snapshot) => (
             <TaskList    //we need tasklist and innerlist separate so when dragging the other tasks that have no change won't render

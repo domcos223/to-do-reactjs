@@ -4,9 +4,11 @@ import Form from "react-bootstrap/Form";
 import React from "react";
 import initialData from '../initial-data';
 import "../styles/add.css";
+import axios from "axios";
+import EditHeader from "../components/EditHeader";
+import AddHeader from "../components/AddHeader";
 
 export default class Add extends React.Component {
-  state = initialData;
 
   handleSubmit = event => {
     event.preventDefault();
@@ -14,20 +16,37 @@ export default class Add extends React.Component {
     const id = urlParams.get("id")
     const title = event.target[0].value
     const description = event.target[1].value
-    const createdDate = event.target[2].value
+    const dueDate = event.target[2].value
+    const todo = {
+      title: title,
+      description: description,
+      duedate : dueDate,
+      columnid : id
+
+    };
 
     console.log("A backendnek elküldtük az alábbi objektumot.")
     console.log({
       id: id,
       title: title,
       description: description,
-      createdDate: createdDate
+      dueDate: dueDate
     })
-    //fetch("POST", {
-//    id: girpgripe
-//  task title: event.taskTitle
-//  description: event.disciption
-//  })
+  axios({
+    method: "post",
+    url: "https://localhost:7202/api/Todo",
+    data: todo
+  })
+    .then(function (response) {
+      //handle success
+  
+    })
+    .catch(function (response) {
+      //handle error
+      console.log(response);
+    });
+    this.routeChange();
+
   }
 
   routeChange=()=> {
@@ -38,9 +57,9 @@ export default class Add extends React.Component {
     return (
       <Container id="main-container" className="d-grid">
         <Form id="addform" className="text-center" onSubmit={this.handleSubmit} method="GET">
-          <h1 className="fs-3 fw-normal">Add new task</h1>
+        {window.location.pathname !== `/add` ? <EditHeader /> : <AddHeader/>}
           <Form.Group id="tasktitle">
-              <Form.Control type="title" size="lg" placeholder="Task title"/>
+              <Form.Control type="title" size="lg" placeholder="Task title" />
           </Form.Group>
           <Form.Group id="taskdesc">
               <Form.Control type="description" size="lg" placeholder="Description"/>
