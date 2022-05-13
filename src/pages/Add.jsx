@@ -2,7 +2,6 @@ import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import React from "react";
-import initialData from '../initial-data';
 import "../styles/add.css";
 import axios from "axios";
 import EditHeader from "../components/EditHeader";

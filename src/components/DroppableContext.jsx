@@ -109,8 +109,18 @@ export default class DroppableContext extends React.Component {
                 [newFinish.columnId-1]: newFinish,
             },
         };
+
+        const draggableIdParsed = parseInt(draggableId);
+        axios.put(`https://localhost:7202/api/Todo/MoveTodo?destinationId=${finish.columnId}&draggableId=${draggableIdParsed}`)
+            .then((response) => {
+                axios.get(`https://localhost:7202/api/Column`)
+                .then(res => {
+                  //  console.log(res);
+                    this.setState({columns: res.data})
+                })
+  });
         
-        this.setState({columns : newState});
+        //this.setState({columns : newState});
        
      };
 
