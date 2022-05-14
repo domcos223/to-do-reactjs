@@ -6,11 +6,58 @@ import "../styles/add.css";
 import axios from "axios";
 import EditHeader from "../components/EditHeader";
 import AddHeader from "../components/AddHeader";
+import moment from "moment";
 
 export default class Add extends React.Component {
+  constructor(props){  
+    super(props);  
+    this.state = {  
+         title: "",
+         description: "",
+         dueDate: ""
+      }  
+    this.handleChange = this.handleChange.bind(this);  
+  }
+  handleChange(title,description,duedate){
+    var formattedDate = moment(duedate).format('YYYY-MM-DD');
+    this.setState({ title: title,  description: description, dueDate: formattedDate })
+  }  
+  componentDidMount() {
+    if(window.location.pathname==="/edit"){
+      //get id from url
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get("id")
+ 
+      //get todo element data
+      axios.get(`https://localhost:7202/api/Todo/${id}`)
+                .then(res => {
+                  //set todo element data into form value
+                  this.handleChange( res.data.title, res.data.description, res.data.dueDate);
+      })
+    }
+}
 
   handleSubmit = event => {
     event.preventDefault();
+    if (window.location.pathname === "/edit"){
+      const urlParams = new URLSearchParams(window.location.search);
+      const id = urlParams.get("id")
+      const title = event.target[0].value
+      const description = event.target[1].value
+      const dueDate = event.target[2].value
+      try {
+        axios
+      .put(
+        `https://localhost:7202/api/Todo/EditTodo?id=${id}&title=${title}&description=${description}&dueDate=${dueDate}`
+      )
+        this.routeChange();
+    } catch (err) {
+        // Handle error
+        console.log(err);
+    }
+
+    }
+    else {
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get("id")
     const title = event.target[0].value
@@ -24,29 +71,20 @@ export default class Add extends React.Component {
 
     };
 
-    console.log("A backendnek elküldtük az alábbi objektumot.")
-    console.log({
-      id: id,
-      title: title,
-      description: description,
-      dueDate: dueDate
-    })
-  axios({
-    method: "post",
-    url: "https://localhost:7202/api/Todo",
-    data: todo
-  })
-    .then(function (response) {
-      //handle success
-  
-    })
-    .catch(function (response) {
-      //handle error
-      console.log(response);
-    });
-    this.routeChange();
-
+    try {
+      axios({
+        method: "post",
+        url: "https://localhost:7202/api/Todo",
+        data: todo
+      })
+      this.routeChange();
+  } catch (err) {
+      // Handle error
+      console.log(err);
   }
+ 
+  }
+}
 
   routeChange=()=> {
     window.location.href = `/`;
@@ -58,13 +96,13 @@ export default class Add extends React.Component {
         <Form id="addform" className="text-center" onSubmit={this.handleSubmit} method="GET">
         {window.location.pathname !== `/add` ? <EditHeader /> : <AddHeader/>}
           <Form.Group id="tasktitle">
-              <Form.Control type="title" size="lg" placeholder="Task title" />
+              <Form.Control  type="title" size="lg" defaultValue={this.state.title} placeholder="Task title" />
           </Form.Group>
           <Form.Group id="taskdesc">
-              <Form.Control type="description" size="lg" placeholder="Description"/>
+              <Form.Control type="description" size="lg" defaultValue={this.state.description} placeholder="Description"/>
           </Form.Group>
           <Form.Group id="taskdate">
-              <Form.Control type="date" size="lg"/>
+              <Form.Control type="date" size="lg" defaultValue={this.state.dueDate}/>
           </Form.Group>
           <a><Button id="submitBtn" type="submit" className="btn-light">Submit</Button></a>
           <a><Button id="backBtn" type="button" className="btn btn-warning" onClick={this.routeChange}>Cancel</Button></a>

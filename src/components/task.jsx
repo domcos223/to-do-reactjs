@@ -2,7 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
 import { ButtonGroup } from "react-bootstrap";
-import {PencilIcon, XIcon, ClockIcon} from '@primer/octicons-react'
+import {PencilIcon, XIcon, ClockIcon} from '@primer/octicons-react';
+import moment from "moment";
+
 
 const Container = styled.div`
   border: 1px solid lightgrey;
@@ -15,11 +17,11 @@ const Container = styled.div`
 
 
 export default class Task extends React.Component {
-
+  
   handleEdit(id) {
     window.location.href = `/edit?id=${id}`;
-
 }
+
 
   render() {
     return (
@@ -41,7 +43,7 @@ export default class Task extends React.Component {
               </span>
             </button>
             
-            <button id="deleteBtn" type="button" aria-label="Close">
+            <button id="deleteBtn" type="button">
               <span aria-hidden="true">
               <XIcon size={16}/>
                 </span>
@@ -51,12 +53,13 @@ export default class Task extends React.Component {
             <div id="taskDate" style={{display:"flex", alignItems:"center"}}>
             <ClockIcon size={16}>
             </ClockIcon>
-            {this.props.task.dueDate}
+            {moment(this.props.task.dueDate).format('YYYY-MM-DD')}
             </div>
-            </div>          
+            </div>
           </Container>
         )}
       </Draggable>
+      
     );
   }
 }
