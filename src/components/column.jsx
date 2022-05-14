@@ -4,6 +4,7 @@ import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import Button from "react-bootstrap/Button";
 import { Plus } from "react-bootstrap-icons";
+import axios from "axios";
 
 
 const Container = styled.div`
@@ -30,6 +31,16 @@ const TaskList = styled.div`
 `;
 
 class InnerList extends React.Component {
+
+  handleRemove = task => {
+    axios
+      .delete(`https://localhost:7202/api/Todo/${task.todoId}`)
+
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   shouldComponentUpdate(nextProps) {
     if (nextProps.tasks === this.props.tasks) {
       return false;
@@ -38,7 +49,7 @@ class InnerList extends React.Component {
   }
   render() {
     return this.props.tasks.map((task, index) => (
-      <Task key={task.todoId} task={task} index={index} />
+      <Task key={task.todoId} task={task} index={index} removeClick={this.handleRemove}/>
     ));
   }
 }

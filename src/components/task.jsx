@@ -4,6 +4,7 @@ import { Draggable } from "react-beautiful-dnd";
 import { ButtonGroup } from "react-bootstrap";
 import {PencilIcon, XIcon, ClockIcon} from '@primer/octicons-react';
 import moment from "moment";
+import axios from "axios";
 
 
 const Container = styled.div`
@@ -21,6 +22,13 @@ export default class Task extends React.Component {
   handleEdit(id) {
     window.location.href = `/edit?id=${id}`;
 }
+removeTodo = (e, task) => {
+  e.preventDefault();
+
+  if (this.props.removeClick) {
+    this.props.removeClick(task);
+  }
+};
 
 
   render() {
@@ -43,7 +51,7 @@ export default class Task extends React.Component {
               </span>
             </button>
             
-            <button id="deleteBtn" type="button">
+            <button id="deleteBtn" type="button" onClick={e => this.removeTodo(e, this.props.task)}>
               <span aria-hidden="true">
               <XIcon size={16}/>
                 </span>

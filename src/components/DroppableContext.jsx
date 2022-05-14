@@ -16,15 +16,12 @@ export default class DroppableContext extends React.Component {
    
   };
 
+
   componentDidMount() {
     axios.get(`https://localhost:7202/api/Column`).then((res) => {
       //  console.log(res);
       this.setState({ columns: res.data });
     });
-    // axios.get(`https://localhost:7202/api/Todo`)
-    // .then(res => {
-    //     this.setState({todos: res.data})
-    // })
   }
 
   onDragEnd = (result) => {

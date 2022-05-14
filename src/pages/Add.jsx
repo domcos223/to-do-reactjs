@@ -93,16 +93,16 @@ export default class Add extends React.Component {
   render() {
     return (
       <Container id="main-container" className="d-grid">
-        <Form id="addform" className="text-center" onSubmit={this.handleSubmit} method="GET">
+        <Form id="addform" className="text-center needs-validation" onSubmit={this.handleSubmit} method="GET">
         {window.location.pathname !== `/add` ? <EditHeader /> : <AddHeader/>}
           <Form.Group id="tasktitle">
-              <Form.Control  type="title" size="lg" defaultValue={this.state.title} placeholder="Task title" />
+              <Form.Control  type="title" size="lg" defaultValue={this.state.title} placeholder="Task title" required />
           </Form.Group>
           <Form.Group id="taskdesc">
-              <Form.Control type="description" size="lg" defaultValue={this.state.description} placeholder="Description"/>
+              <Form.Control type="description" size="lg" defaultValue={this.state.description} placeholder="Description" required/>
           </Form.Group>
           <Form.Group id="taskdate">
-              <Form.Control type="date" size="lg" defaultValue={this.state.dueDate}/>
+              <Form.Control type="date" size="lg" max={ "9999-12-31" } defaultValue={this.state.dueDate} required/>
           </Form.Group>
           <a><Button id="submitBtn" type="submit" className="btn-light">Submit</Button></a>
           <a><Button id="backBtn" type="button" className="btn btn-warning" onClick={this.routeChange}>Cancel</Button></a>
