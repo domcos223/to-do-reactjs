@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { DragDropContext } from "react-beautiful-dnd";
 import axios from "axios";
 
-
 const Container = styled.div`
   display: flex;
   justify-content: center;
@@ -13,9 +12,7 @@ const Container = styled.div`
 export default class DroppableContext extends React.Component {
   state = {
     columns: [],
-   
   };
-
 
   componentDidMount() {
     axios.get(`https://localhost:7202/api/Column`).then((res) => {
@@ -40,50 +37,37 @@ export default class DroppableContext extends React.Component {
     ) {
       return;
     }
-    //
+
     let start = this.state.columns[source.droppableId - 1];
     let finish = this.state.columns[destination.droppableId - 1];
-    let draggedTodo = start.todos[draggableId - 1];
+    let draggedTodo = this.state.columns[source.droppableId - 1].todos[source.index]; //select dragged todo from source column
+    const draggableIdParsed = parseInt(draggableId);
+    let newOrderId = destination.index + 1;
 
-    //let start = source.droppableId; //id of the column the task was moved from
-    //let finish = destination.droppableId;
-    //finish = parseInt(finish);
-    //console.log("Honnan: "+ start + " Hova: "+finish+" Mit: "+draggableId );
-
-    //dragging happens inside one column
     if (start === finish) {
-      const newTaskIds = Array.from(start.todos); //creating a new TaskIds array to avoid mutating explicitly
-      newTaskIds.splice(source.index, 1); //take out the moved item from its index
-      newTaskIds.splice(destination.index, 0, draggedTodo); //not removing anything, but inserting the new task
+      const getTodos = Array.from(start.todos); //creating a new TaskIds array to avoid mutating explicitly
+      getTodos.splice(source.index, 1); //take out the moved item from its index
+      getTodos.splice(destination.index, 0, draggedTodo); //not removing anything, but inserting the new task
 
-      const newColumn = {
-        ...start, //has the same properties but new taskIds - we keep the old properties !
-        todos: newTaskIds,
+      const reIndexedValues = {
+        ...start,
+        todos: getTodos,
       };
 
-      const newState = {
-        ...this.state,
-        columns: {
-          ...this.state.columns,
-          [newColumn.columnId - 1]: newColumn, //passing the new column object at the changed index ,changing the old
-        },
-      };
-      this.setState(Array.from(newState)); //saving the order change, updating (?)
+      let columns = [...this.state.columns];
+      let reIndexStart = { ...columns[start.columnId - 1] };
+      reIndexStart.todos = reIndexedValues.todos;
+      columns[start.columnId - 1] = reIndexStart;
+      axios.put(`https://localhost:7202/api/Todo/MoveTodo?destinationId=${start.columnId}&draggableId=${draggableIdParsed}&orderId=${newOrderId}`)
+
+      this.setState({ columns: columns });
       return;
     }
-    // const res = axios({
-    //     method: 'put',
-    //     url: 'https://localhost:7202/api/Todos/UpdateList',
-    //     data: {
-    //         id: finish,
-    //         draggedtaskid:draggableId
-    //     }
-    // })
 
     // moving from one column to another
     const startTaskIds = Array.from(start.todos);
     startTaskIds.splice(source.index, 1); //remove dragged task-id
-    const newStart = {
+    const newStartElements = {
       ...start,
       todos: startTaskIds,
     };
@@ -91,33 +75,25 @@ export default class DroppableContext extends React.Component {
     const finishTaskIds = Array.from(finish.todos); //add dropped task to new column
     finishTaskIds.splice(destination.index, 0, draggedTodo);
 
-    const newFinish = {
+    const newFinishElements = {
       ...finish,
       todos: finishTaskIds,
     };
 
-    const newState = {
-      ...this.state,
-      columns: {
-        ...this.state.columns,
-        [newStart.columnId - 1]: newStart,
-        [newFinish.columnId - 1]: newFinish,
-      },
-    };
+    axios.put(
+      `https://localhost:7202/api/Todo/MoveTodoAnother?sourceId=${start.columnId}&destinationId=${finish.columnId}&draggableId=${draggableIdParsed}&orderId=${newOrderId}`
+    );
 
-    const draggableIdParsed = parseInt(draggableId);
-    axios
-      .put(
-        `https://localhost:7202/api/Todo/MoveTodo?destinationId=${finish.columnId}&draggableId=${draggableIdParsed}`
-      )
-      .then((response) => {
-        axios.get(`https://localhost:7202/api/Column`).then((res) => {
-          //  console.log(res);
-          this.setState({ columns: res.data });
-        });
-      });
+    let columns = [...this.state.columns]; //copy of the original columns
+    let columnStart = { ...columns[start.columnId - 1] }; //get the original starter column
+    columnStart.todos = newStartElements.todos; //setting todos now without the moved todo for the copy
+    columns[start.columnId - 1] = columnStart; //updates value of copy
 
-    //this.setState({columns : newState});
+    let columnFinish = { ...columns[finish.columnId - 1] };
+    columnFinish.todos = newFinishElements.todos;
+    columns[finish.columnId - 1] = columnFinish;
+
+    this.setState({ columns: columns }); //update the original columns with the new values
   };
 
   render() {
@@ -139,7 +115,6 @@ export default class DroppableContext extends React.Component {
           })}
         </Container>
       </DragDropContext>
-        
     );
   }
 }

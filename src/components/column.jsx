@@ -35,7 +35,6 @@ class InnerList extends React.Component {
   handleRemove = task => {
     axios
       .delete(`https://localhost:7202/api/Todo/${task.todoId}`)
-
       .catch(err => {
         console.log(err);
       });
@@ -77,7 +76,7 @@ export default class Column extends React.Component {
               {...provided.droppableProps}  //provides the props to update DOM node
               isDraggingOver={snapshot.isDraggingOver} //for styling
             >
-              <InnerList tasks={this.props.tasks} />
+              <InnerList tasks={this.props.tasks} removeClick={this.props.handleRemove} />
               {provided.placeholder} 
             </TaskList>
           )}
