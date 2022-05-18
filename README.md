@@ -1,71 +1,76 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Task Manager App (ReactJS)
 
-## Available Scripts
+Az alábbi dokumentáció bemutatja a Task Manager APP kliensoldalának beüzemelését, működését. A backend dokumentációja itt található (https://github.com/domcos223/to-do-asp.net#README.md)
 
-In the project directory, you can run:
+# Beüzemelés
 
-### `npm start`
+Fejlesztői környezet: [Visual Studio Code](https://code.visualstudio.com/)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Modulok, Packagek kezeléséhez feltétlen szükséges telepíteni: [Node.js](https://nodejs.org/en/)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Töltsük vagy klónozzuk le a repository-t melyben ez a dokumentáció megtalálható. Ha megnyitottuk a fejlesztőkörnyezetben a mappát nyissunk egy új terminált (Terminal -> New Terminal)
+és adjuk ki a következő parancsokat:
 
-### `npm test`
+```bash
+  npm install
+```
+(vulnerabilities esetén kövessük a terminál utasításait.)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Ha minden rendben, indítható az oldal hasonló módon, a terminálban
+```bash
+  npm start
+```
+http://localhost:3000/ címen megnyílik a weboldal.
 
-### `npm run build`
+!!Fontos, hogy eközben fusson háttérben a szerveroldal is párhuzamosan, enélkül nem tudunk kommunikálni a szerverrel.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Felépítés
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Stílusozásra Bootstrap-et, styled-components-et használtam, és mivel a hozzáadás más oldalon történik React-Routingra is szükségem volt. A drap-and-drop megvalósításához **react-beautiful-dnd**-t használtam. (npm install-al telepíthetőek).
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+A kommunikációhoz axios-t használtam.
 
-### `npm run eject`
+Három főmappában tárolom a szükséges fájlokat. A .css típusú fájlok a **styles** mappába kerültek, ezekben található az egyes komponensek stílusozása.
+**pages** mappában található a hozzáadás oldal komponense, valamint egy Notfound.jsx fájl mely rossz elérési út megadása esetén egyszerű Not Found szöveget ír ki a képernyőre.
+A **components** mappa tartalmazza az alkalmazást felépítő komponenseket.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## DroppableContext.jsx
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+A kontextus ami az oszlopok és tartalma megjelenítéséért, frissítéséért felel. Ebben található több kisebb komponens.
+Itt található az onDragEnd-ben a drag-and-drop logikája mely alapján frissítjük a state-t, és adatot küldünk a szervernek a változásokról.
+Elég hosszú a kód de részeire bontva : kezeli, ha ugyanarra a helyre húztuk az elemet, külön kezeli, ha ugyanabban az oszlopban mozgattunk, és kezeli azt is ha egyik oszlopból a másikba szeretnénk áthúzni.
+Minden beavatkozás után állítjuk a state-t, hogy automatikusan frissüljön az oldal, és axios-sal regisztráljuk a változásokat.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Column.jsx
+**Droppable** -be csomagoljuk, ezzel elérhetővé tesszük a mozgatás fogadásához szükséges propertyket.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Oszlop komponens kirajzolása benne több kisebb komponenssel mint TaskList, InnerList, Task.
+Hozzáadás gomb eseménykezelője itt található, mely az Add komponens által reprezentált oldalra navigál, ahol valójában történik a hozzáadás.
 
-## Learn More
+### Add.jsx
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Megjelenít egy formot melybe adatokat írunk és ezt elküldi a szervernek. Mentés után visszadob a főoldalra, mely újra lekéri az adatbázisból az adatokat.
+A felület így frissül az újonnan hozzáadott adatok megjelennek. 
+A módosítás is ezt a komponenst használja. Url alapján dönt, hogy mi történik.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Task.jsx
+**Draggable** -be csomagoljuk, ezzel elérhetővé tesszük a mozgatáshoz szükséges propertyket.
 
-### Code Splitting
+A Task komponens a todo megjelenítése, és gombjaihoz tartozó logikák. Edit gomb megnyomására átirányít a módosítás oldalára, ahol a form-ba betölti a task adatait.
+A törlés gombbal el tudjuk távolítani az adott todo-t.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### InnerList, TaskList.jsx
 
-### Analyzing the Bundle Size
+Szükséges a Task komponensek helyzetének frissítésére. Emiatt a felépítés miatt a dev tools segítségével látható, hogy mozgatáskor csak az érintett komponensek renderelődnek újra.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Header.jsx, AddHeader.jsx, EditHeader.jsx
 
-### Making a Progressive Web App
+Különböző header komponensek, az oldaltól függően renderelődnek.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-"# to-do-reactjs" 
