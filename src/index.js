@@ -11,6 +11,7 @@ ReactDOM.render(
     <Routes>
     <Route path="/" element={<App />}/>
     <Route path="/add" element={<Add />}/>
+    <Route path="/edit" element={<Add />}/>
     <Route path="*" element={<NotFound />} />
     </Routes>
     </BrowserRouter>, document.getElementById("root"));

@@ -1,9 +1,10 @@
 import React from "react";
-import Task from "./task";
+import Task from "./Task";
 import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import Button from "react-bootstrap/Button";
 import { Plus } from "react-bootstrap-icons";
+import axios from "axios";
 
 
 const Container = styled.div`
@@ -24,21 +25,29 @@ const TaskList = styled.div`
   padding: 8px;
   transition: background-color 0.2 ease;
   border-radius: 5%;
-  background-color: ${(props) => (props.isDraggingOver ? "skyblue" : "white")};
+  background-color: ${(props) => (props.isDraggingOver ? "skyblue" : "white")}; /* color changes if task is dragged over it */
   flex-grow: 1;
   min-height: 100px;
 `;
 
 class InnerList extends React.Component {
-  shouldComponentUpdate(nextProps) {
-    if (nextProps.tasks === this.props.tasks) {
-      return false;
-    }
-    return true;
+
+  handleRemove = task => {
+    axios
+      .delete(`https://localhost:7202/api/Todo/${task.todoId}`)
+      .catch(err => {
+        console.log(err);
+      });
+      this.routeChange(); //TODO update state instead...
+  };
+
+  routeChange=()=> {
+    window.location.href = `/`;
   }
+
   render() {
     return this.props.tasks.map((task, index) => (
-      <Task key={task.id} task={task} index={index} />
+      <Task key={task.todoId} task={task} index={index} removeClick={this.handleRemove}/>
     ));
   }
 }
@@ -47,28 +56,28 @@ export default class Column extends React.Component {
     handleAdd(id) {
         window.location.href = `/add?id=${id}`;
     }
+    
 
   render() {
     return (
       <Container>
         <Title>
-          {this.props.column.title}
-          <Button variant="primary" onClick={() => this.handleAdd(this.props.column.id)} style={{ float: "right" }} className="btn-sm">
+          {this.props.columnTitle}
+          <Button variant="primary" id={this.props.column} onClick={() => this.handleAdd(this.props.column)} style={{ float: "right" }} className="btn-sm">
             <Plus style={{ backgroundColor: null }} />
           </Button>
         </Title>
         <Droppable
-          droppableId={this.props.column.id}
-          isDropDisabled={this.props.isDropDisabled}
+          droppableId={this.props.column}
         >
           {(provided, snapshot) => (
-            <TaskList
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-              isDraggingOver={snapshot.isDraggingOver}
+            <TaskList    //we need tasklist and innerlist separate so when dragging the other tasks that have no change won't render
+              ref={provided.innerRef}  //provided has all the data to make a droppable function properly
+              {...provided.droppableProps}  //provides the props to update DOM node
+              isDraggingOver={snapshot.isDraggingOver} //for styling
             >
-              <InnerList tasks={this.props.tasks} />
-              {provided.placeholder}
+              <InnerList tasks={this.props.tasks} removeClick={this.handleRemove}/>
+              {provided.placeholder} 
             </TaskList>
           )}
         </Droppable>
