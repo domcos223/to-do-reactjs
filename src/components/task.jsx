@@ -30,8 +30,6 @@ removeTodo = (e, task) => {
   }
 };
 
-
-
   render() {
     return (
       <Draggable draggableId={this.props.task.todoId.toString()} index={this.props.index}>

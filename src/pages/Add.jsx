@@ -77,7 +77,10 @@ export default class Add extends React.Component {
         url: "https://localhost:7202/api/Todo",
         data: todo
       })
-      this.routeChange();
+      const timer = setTimeout(() => {
+        this.routeChange();
+      }, 1000);
+      
   } catch (err) {
       // Handle error
       console.log(err);

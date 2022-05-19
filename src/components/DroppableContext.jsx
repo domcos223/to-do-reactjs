@@ -16,7 +16,6 @@ export default class DroppableContext extends React.Component {
 
   componentDidMount() {
     axios.get(`https://localhost:7202/api/Column`).then((res) => {
-      //  console.log(res);
       this.setState({ columns: res.data });
     });
   }
@@ -40,14 +39,15 @@ export default class DroppableContext extends React.Component {
 
     let start = this.state.columns[source.droppableId - 1];
     let finish = this.state.columns[destination.droppableId - 1];
-    let draggedTodo = this.state.columns[source.droppableId - 1].todos[source.index]; //select dragged todo from source column
+    let draggedTodo = start.todos[source.index]; 
     const draggableIdParsed = parseInt(draggableId);
     let newOrderId = destination.index + 1;
 
+    //moving inside one column
     if (start === finish) {
-      const getTodos = Array.from(start.todos); //creating a new TaskIds array to avoid mutating explicitly
-      getTodos.splice(source.index, 1); //take out the moved item from its index
-      getTodos.splice(destination.index, 0, draggedTodo); //not removing anything, but inserting the new task
+      const getTodos = Array.from(start.todos); 
+      getTodos.splice(source.index, 1); 
+      getTodos.splice(destination.index, 0, draggedTodo); 
 
       const reIndexedValues = {
         ...start,
@@ -65,27 +65,27 @@ export default class DroppableContext extends React.Component {
     }
 
     // moving from one column to another
-    const startTaskIds = Array.from(start.todos);
-    startTaskIds.splice(source.index, 1); //remove dragged task-id
+    const startTodos = Array.from(start.todos);
+    startTodos.splice(source.index, 1); //remove dragged task-id
     const newStartElements = {
       ...start,
-      todos: startTaskIds,
+      todos: startTodos,
     };
 
-    const finishTaskIds = Array.from(finish.todos); //add dropped task to new column
-    finishTaskIds.splice(destination.index, 0, draggedTodo);
+    const finishTodos = Array.from(finish.todos); //add dropped task to new column
+    finishTodos.splice(destination.index, 0, draggedTodo);
 
     const newFinishElements = {
       ...finish,
-      todos: finishTaskIds,
+      todos: finishTodos,
     };
 
     axios.put(
-      `https://localhost:7202/api/Todo/MoveTodoAnother?sourceId=${start.columnId}&destinationId=${finish.columnId}&draggableId=${draggableIdParsed}&orderId=${newOrderId}`
+      `https://localhost:7202/api/Todo/MoveTodo?sourceId=${start.columnId}&destinationId=${finish.columnId}&draggableId=${draggableIdParsed}&orderId=${newOrderId}`
     );
 
-    let columns = [...this.state.columns]; //copy of the original columns
-    let columnStart = { ...columns[start.columnId - 1] }; //get the original starter column
+    let columns = [...this.state.columns]; 
+    let columnStart = { ...columns[start.columnId - 1] }; 
     columnStart.todos = newStartElements.todos; //setting todos now without the moved todo for the copy
     columns[start.columnId - 1] = columnStart; //updates value of copy
 

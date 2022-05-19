@@ -38,14 +38,13 @@ class InnerList extends React.Component {
       .catch(err => {
         console.log(err);
       });
+      this.routeChange(); //TODO update state instead...
   };
 
-  shouldComponentUpdate(nextProps) {
-    if (nextProps.tasks === this.props.tasks) {
-      return false;
-    }
-    return true;
+  routeChange=()=> {
+    window.location.href = `/`;
   }
+
   render() {
     return this.props.tasks.map((task, index) => (
       <Task key={task.todoId} task={task} index={index} removeClick={this.handleRemove}/>
@@ -57,6 +56,7 @@ export default class Column extends React.Component {
     handleAdd(id) {
         window.location.href = `/add?id=${id}`;
     }
+    
 
   render() {
     return (
@@ -76,7 +76,7 @@ export default class Column extends React.Component {
               {...provided.droppableProps}  //provides the props to update DOM node
               isDraggingOver={snapshot.isDraggingOver} //for styling
             >
-              <InnerList tasks={this.props.tasks} removeClick={this.props.handleRemove} />
+              <InnerList tasks={this.props.tasks} removeClick={this.handleRemove}/>
               {provided.placeholder} 
             </TaskList>
           )}
